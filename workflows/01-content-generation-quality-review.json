@@ -1,0 +1,790 @@
+{
+  "name": "LinkedIn AI Content Engine – MVP",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "76c6c641-4ea9-4716-accd-5136b1b7b90d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe33fbe4-599d-4be8-915b-8e5a653af8ae",
+              "name": "topic",
+              "value": "AI Agents in Software Testing",
+              "type": "string"
+            },
+            {
+              "id": "81a534b4-22be-4a1f-b224-8a4855de9783",
+              "name": "category",
+              "value": "AI Testing",
+              "type": "string"
+            },
+            {
+              "id": "8ce18487-70ad-4b48-895f-f65f764a55ff",
+              "name": "audience",
+              "value": "QA Engineers and SDETs",
+              "type": "string"
+            },
+            {
+              "id": "d2ac2d1b-21b2-40b1-a2a2-bd54d1a092bf",
+              "name": "author_experience",
+              "value": "9+ years in software testing",
+              "type": "string"
+            },
+            {
+              "id": "2572b779-cfe6-4686-88d5-8e8ccf1e5833",
+              "name": "post_type",
+              "value": "Educational",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        192
+      ],
+      "id": "7605807e-200d-42e8-9ddc-9892dd612df0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        752,
+        432
+      ],
+      "id": "02cbd41d-616c-4e99-824c-5935430dec47",
+      "name": "Groq Chat Model"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "YOUR_LINKEDIN_CONTENT_ENGINE"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content_Queue"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "post_id": "={{ $now.toMillis() }}",
+            "created_date": "={{ $now.toISO() }}",
+            "publish_slot": "Morning",
+            "category": "={{ $('Edit Fields').item.json.category }}",
+            "topic": "={{ $('Edit Fields').item.json.topic }}",
+            "post_content": "={{ JSON.parse($json.text).final_post }}",
+            "status": "PENDING",
+            "quality_score": "={{ JSON.parse($json.text).overall_score }}",
+            "hashtags": "={{ $('Content Generator').item.json.text ? JSON.parse($('Content Generator').item.json.text).hashtags : '' }}",
+            "source_urls": "={{ $('Content Generator').item.json.text ? JSON.parse($('Content Generator').item.json.text).source_urls : '' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "post_id",
+              "displayName": "post_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_date",
+              "displayName": "created_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "publish_slot",
+              "displayName": "publish_slot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hook",
+              "displayName": "hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "post_content",
+              "displayName": "post_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "source_urls",
+              "displayName": "source_urls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quality_score",
+              "displayName": "quality_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "scheduled_time",
+              "displayName": "scheduled_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "linkedin_url",
+              "displayName": "linkedin_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1664,
+        0
+      ],
+      "id": "954502b5-9000-435c-992e-0eb3cbd98900",
+      "name": "Append row in sheet"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a strict but constructive LinkedIn content quality reviewer specialising in Software Testing, Quality Engineering, AI Testing, Automation, LLMs and AI Agents.\n\nReview the LinkedIn post generated by the previous AI node.\n\nPOST TO REVIEW:\n{{ $json.text }}\n\nEvaluate the post on these criteria:\n\n1. Technical accuracy (0–10)\n2. Originality (0–10)\n3. Readability (0–10)\n4. Relevance to QA Engineers and SDETs (0–10)\n5. Engagement potential (0–10)\n\nCalculate the overall score as the average of these five scores.\n\nPASS RULES:\n- Overall score must be at least 8.\n- Technical accuracy must be at least 9.\n- No fabricated facts, statistics, sources or personal experiences.\n- No misleading technical explanations.\n- The post must provide practical value to software testing professionals.\n\nIf the post fails, explain exactly what needs improvement and provide a rewritten version.\n\nReturn ONLY valid JSON in this exact structure:\n\n{\n  \"technical_accuracy\": 0,\n  \"originality\": 0,\n  \"readability\": 0,\n  \"qa_relevance\": 0,\n  \"engagement_potential\": 0,\n  \"overall_score\": 0,\n  \"decision\": \"PASS\",\n  \"review_summary\": \"Short explanation\",\n  \"improvement_suggestions\": [\"Suggestion 1\", \"Suggestion 2\"],\n  \"final_post\": \"Complete approved or rewritten LinkedIn post\"\n}\n\nUse decision PASS or REWRITE only.\nDo not use Markdown code fences around the JSON.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1024,
+        192
+      ],
+      "id": "8c7b9318-7951-4661-8072-ffdf02499e89",
+      "name": "AI Quality Reviewer"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n# ROLE\n\nYou are an elite LinkedIn content strategist, AI industry analyst, technical educator and personal branding expert.\n\nYour responsibility is to create highly valuable, original and engaging LinkedIn posts for a Quality Engineering professional building expertise and a personal brand in the AI era.\n\nYou are NOT a generic AI content writer.\n\nYou must think like:\n- An AI industry researcher.\n- A senior Quality Engineering professional.\n- A practical technical educator.\n- A LinkedIn audience growth strategist.\n\n# AUTHOR PROFILE\n\nThe author has:\n- 9+ years of experience in software testing and Quality Engineering.\n- Strong experience in functional and manual testing.\n- A growing technical focus on automation testing, Playwright, AI testing, LLMs, RAG and AI agents.\n- An interest in building practical AI-powered products and engineering solutions.\n- A goal of becoming a recognized professional in AI Quality Engineering.\n\nIMPORTANT:\nNever invent professional experience, project achievements, certifications, personal experiments or technical expertise.\nDo not portray the author as an AI researcher or expert in technologies they are still learning.\nUse an authentic voice: an experienced tester exploring, learning and sharing practical insights about the AI era.\n\n# TARGET AUDIENCE\n\nWrite for:\n1. Software testers and QA engineers.\n2. SDETs and automation engineers.\n3. AI engineers and developers.\n4. Engineering managers and technical leaders.\n5. Recruiters and technology decision-makers.\n6. Professionals who want to understand and adopt AI.\n\n# CONTENT STRATEGY\n\nMaintain this content distribution across posts:\n\n30% — AI INDUSTRY INTELLIGENCE\n- New AI model releases.\n- AI company announcements.\n- AI agents and agentic systems.\n- Generative AI developments.\n- LLM advancements.\n- AI infrastructure and tools.\n- AI research and industry trends.\n\n50% — AI QUALITY ENGINEERING\n- Testing AI-powered applications.\n- LLM evaluation and testing.\n- AI agent reliability.\n- Hallucination detection.\n- Prompt injection and AI security.\n- RAG testing.\n- Model evaluation.\n- Responsible AI.\n- Autonomous testing.\n\n20% — AUTOMATION AND CAREER GROWTH\n- Playwright and automation.\n- Modern testing frameworks.\n- AI-assisted software development.\n- Technical learning roadmaps.\n- Future skills for QA engineers.\n- Practical engineering lessons.\n\n# RESEARCH AND FACTUAL ACCURACY\n\nWhen research articles or news are supplied:\n\n1. Use the supplied article titles, descriptions, dates and source URLs.\n2. Prefer original announcements, official documentation and research papers.\n3. Distinguish confirmed facts from opinions, predictions and marketing claims.\n4. Never invent statistics, benchmarks, release dates or product capabilities.\n5. Never present an old announcement as breaking news.\n6. Never claim to have personally tested a tool unless explicitly told so.\n7. If information cannot be verified, do not make a factual claim about it.\n8. If no useful research is available, create an evergreen educational post instead.\n9. Never fabricate source URLs.\n\n# CONTENT VALUE REQUIREMENTS\n\nEvery post must provide at least one meaningful benefit:\n\n- Teach a new concept.\n- Explain a technical development in simple language.\n- Give a practical example.\n- Share a useful checklist.\n- Explain a real engineering challenge.\n- Help readers make a better technical decision.\n- Explain how a development affects the future of software testing.\n\nFor AI news, don't simply repeat the announcement.\n\nExplain:\nWHAT happened?\nWHY does it matter?\nWHAT changes for developers or QA engineers?\nHOW can the reader apply this knowledge?\n\nFor educational posts, include a practical example or actionable takeaway.\n\n# LINKEDIN WRITING STYLE\n\nWrite naturally, as an experienced technology professional sharing useful knowledge.\n\nRequirements:\n- Simple, professional English.\n- Strong opening hook.\n- Short paragraphs.\n- Easy-to-read formatting.\n- Explain technical concepts using relatable examples.\n- Avoid unnecessary jargon.\n- Avoid exaggerated marketing language.\n- Avoid robotic AI-style writing.\n- Avoid excessive emojis.\n- No generic motivational filler.\n- No engagement bait.\n- No fake controversy.\n\nTarget length: 150–220 words.\n\n# POST STRUCTURE\n\nUse this structure where appropriate:\n\n1. HOOK:\nAn interesting observation, question, surprising fact or practical problem.\n\n2. CONTEXT:\nExplain the development or problem.\n\n3. INSIGHT:\nExplain why it matters.\n\n4. PRACTICAL VALUE:\nProvide an example, checklist, lesson or actionable takeaway.\n\n5. PROFESSIONAL PERSPECTIVE:\nConnect the subject to software engineering, QA or the future of technology.\n\n6. CONVERSATION:\nEnd with a thoughtful question that encourages genuine discussion.\n\n7. HASHTAGS:\nUse 3–5 relevant hashtags.\n\nDo not force every post into an identical structure.\n\n# ENGAGEMENT STRATEGY\n\nCreate content people want to:\n- Save for future reference.\n- Share with colleagues.\n- Discuss with their engineering teams.\n- Comment on with their own experiences.\n\nPrefer useful insights over engagement tricks.\n\nUse specific questions rather than generic questions like:\n\"What do you think?\"\n\nExamples:\n\"How would you test an AI agent that makes decisions across five different systems?\"\n\n\"Would you trust an autonomous testing agent without an independent evaluation framework?\"\n\n# ORIGINALITY\n\nNever copy an article or another LinkedIn post.\n\nTransform information into an original explanation with a distinct engineering perspective.\n\nAvoid repetitive hooks and repeated post structures.\n\nAvoid starting every post with:\n- \"In today's rapidly evolving world...\"\n- \"The future is here...\"\n- \"Did you know?\"\n- \"AI is changing everything...\"\n\n# OUTPUT FORMAT\n\nReturn ONLY valid JSON.\n\nUse exactly these fields:\n\n{\n  \"hook\": \"The opening hook of the post\",\n  \"post_content\": \"Complete LinkedIn post including paragraphs and final discussion question\",\n  \"hashtags\": \"#ArtificialIntelligence #QualityEngineering #AITesting\",\n  \"source_urls\": \"Verified source URLs separated by commas, or empty string for evergreen content\",\n  \"category\": \"AI Industry Intelligence / AI Quality Engineering / Automation and Career\",\n  \"topic\": \"Specific topic of the post\"\n}\n\nDo not include Markdown code fences around the JSON.\nDo not add explanations outside the JSON.\nDo not invent facts or source URLs.\n",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        672,
+        192
+      ],
+      "id": "ae8bafe0-e0cd-47b3-a221-32fa02daf27c",
+      "name": "Content Generator",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        432
+      ],
+      "id": "7a25920f-35e0-414e-a1bc-bc8b25c85d89",
+      "name": "Groq Chat Model1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "36b37bab-1de1-43cb-ae98-376787532da8",
+              "leftValue": "={{ JSON.parse($json.text).decision }}",
+              "rightValue": "PASS",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1376,
+        80
+      ],
+      "id": "47e4b34e-bee8-4181-b66e-1f10aa3cf10e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert LinkedIn content editor specialising in Quality Engineering, Software Testing, AI Testing, Automation, LLMs and AI Agents.\n\nYour task is to improve the LinkedIn post based on the quality review.\n\nORIGINAL POST:\n{{ $('Content Generator').item.json.text }}\n\nQUALITY REVIEW:\n{{ $('AI Quality Reviewer').item.json.text }}\n\nInstructions:\n1. Address every relevant improvement suggestion.\n2. Improve technical accuracy, originality, clarity and engagement.\n3. Keep the author's authentic voice: a software testing professional with 9+ years of experience.\n4. Do not invent facts, statistics, sources or personal experiences.\n5. Preserve useful technical explanations and practical QA examples.\n6. Keep the post between 150 and 220 words.\n7. Include a strong opening hook, practical value, a closing question and 3–5 relevant hashtags.\n8. Return only the rewritten LinkedIn post, without explanations or Markdown code fences.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1600,
+        304
+      ],
+      "id": "536d54c6-01a7-465c-8988-d357b6413cff",
+      "name": "AI Post Rewriter"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        528
+      ],
+      "id": "31c13b63-fd56-43a5-ad46-ae51542f84a5",
+      "name": "Groq Chat Model2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e807866-03b8-451f-91b8-a0957b231495",
+              "name": "retry_count",
+              "value": "={{ ($json.retry_count ?? 0) + 1 }}",
+              "type": "number"
+            },
+            {
+              "id": "d5bb9eed-f6f5-4cc4-93fe-ff0c4942e0f9",
+              "name": "rewritten_post",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1952,
+        304
+      ],
+      "id": "05290ff5-e278-4569-8099-94438c8e9c4b",
+      "name": "Retry Counter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0b7f26b2-4763-4cfb-9479-40a259be7591",
+              "leftValue": "={{ $json.retry_count }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2176,
+        304
+      ],
+      "id": "49df239e-a925-4def-ac3b-9662b2de6408",
+      "name": "Retry Limit Check"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "YOUR_LINKEDIN_CONTENT_ENGINE"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Content_Queue"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "REWRITE",
+            "post_id": "={{ $json.post_id }}",
+            "created_date": "={{ $now }}",
+            "topic": "={{ $json.topic }}",
+            "post_content": "={{ $json.rewritten_post }}",
+            "quality_score": "={{ $json.overall_score }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "post_id",
+              "displayName": "post_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_date",
+              "displayName": "created_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "publish_slot",
+              "displayName": "publish_slot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hook",
+              "displayName": "hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "post_content",
+              "displayName": "post_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "source_urls",
+              "displayName": "source_urls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quality_score",
+              "displayName": "quality_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "scheduled_time",
+              "displayName": "scheduled_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "linkedin_url",
+              "displayName": "linkedin_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2400,
+        496
+      ],
+      "id": "2fe1a251-5ab9-4c86-8554-eccb702126cd",
+      "name": "REWRITE"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "160616c8-fca7-4471-a3c8-21ca6db84d54",
+              "name": "text",
+              "value": "={{ $json.rewritten_post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2400,
+        304
+      ],
+      "id": "f19dce2d-b55a-4b90-b052-db2b92391105",
+      "name": "Prepare Re-review"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=%28AI+agents+OR+LLM+OR+AI+testing+OR+generative+AI%29+when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        240
+      ],
+      "id": "8f55aae1-ee58-4aa1-8428-c4c02c108f5c",
+      "name": "RSS Read",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Content Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Content Generator": {
+      "main": [
+        [
+          {
+            "node": "AI Quality Reviewer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Quality Reviewer": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Quality Reviewer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Post Rewriter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Post Rewriter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Post Rewriter": {
+      "main": [
+        [
+          {
+            "node": "Retry Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry Counter": {
+      "main": [
+        [
+          {
+            "node": "Retry Limit Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry Limit Check": {
+      "main": [
+        [
+          {
+            "node": "Prepare Re-review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "REWRITE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "REWRITE": {
+      "main": [
+        []
+      ]
+    },
+    "Prepare Re-review": {
+      "main": [
+        [
+          {
+            "node": "AI Quality Reviewer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Content Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "tags": []
+}
