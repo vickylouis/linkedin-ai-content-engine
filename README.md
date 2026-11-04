@@ -1,3 +1,5 @@
+![AI-Powered LinkedIn Content Engine](docs/AI-Powered%20LinkedIn%20Workflow%20Banner.png)
+
 # 🤖 AI-Powered LinkedIn Content Automation Engine
 
 **An AI-assisted content generation, quality review and LinkedIn publishing system built using n8n.**
