@@ -10,6 +10,19 @@ This project is my first practical implementation exploring how AI and workflow 
 
 Creating consistent LinkedIn content takes time. I wanted to explore how AI could support the complete content workflow while keeping humans in control.
 
+## 📚 Developer Documentation
+
+Want to build this project yourself?
+
+- [MVP 1 Implementation Guide](docs/implementation-guide.md)
+- [System Architecture](docs/architecture.md)
+- [Troubleshooting Guide](docs/troubleshooting.md)
+- [n8n Workflow 1 – Content Generation](workflows/01-content-generation-quality-review.json)
+- [n8n Workflow 2 – LinkedIn Publisher](workflows/02-approved-linkedin-publisher.json)
+- [Google Sheets Template](templates/content-queue-template.csv)
+
+Follow the implementation guide to set up the project using n8n Community Edition locally.
+
 ## 📸 Actual n8n Workflow Implementation
 
 ### Workflow 1 — AI Content Generation and Quality Review
