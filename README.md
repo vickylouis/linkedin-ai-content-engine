@@ -1,4 +1,4 @@
-![AI-Powered LinkedIn Content Engine](docs/AI-Powered%20LinkedIn%20Workflow%20Banner.png)
+![AI-Powered LinkedIn Content Engine](AI-Powered%20LinkedIn%20Workflow%20Banner.png)
 
 # 🤖 AI-Powered LinkedIn Content Automation Engine
 
