@@ -70,5 +70,5 @@ This Privacy Policy may be updated when application functionality or data proces
 For privacy-related questions, contact:
 
 **Application:** LinkedIn AI Content Engine  
-**Contact Email:** REPLACE_WITH_YOUR_EMAIL
+**Contact Email:** vicky130294@gmail.com
 
