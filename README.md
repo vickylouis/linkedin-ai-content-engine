@@ -8,6 +8,20 @@ This project is my first practical implementation exploring how AI and workflow 
 
 Creating consistent LinkedIn content takes time. I wanted to explore how AI could support the complete content workflow while keeping humans in control.
 
+## 📸 Actual n8n Workflow Implementation
+
+### Workflow 1 — AI Content Generation and Quality Review
+
+This workflow generates LinkedIn content, evaluates quality, handles rewriting and sends accepted content to Google Sheets for human approval.
+
+![AI Content Generation Workflow](docs/content-generation-workflow.png)
+
+### Workflow 2 — Approved LinkedIn Post Publisher
+
+This workflow retrieves approved content, validates publishing eligibility, publishes one post to LinkedIn and updates the publishing status in Google Sheets.
+
+![LinkedIn Publishing Workflow](docs/linkedin-publishing-workflow.png)
+
 With this project, I built two n8n workflows.
 
 ## ⚙️ Workflow 1 — AI Content Generation
